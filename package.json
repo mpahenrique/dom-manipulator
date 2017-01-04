@@ -1,6 +1,6 @@
 {
   "name": "dom-manipulator",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,10 @@
     { 
       "name" : "Henrique Matheus Pereira Aveiro",
       "github" : "https://github.com/mpahenrique"
+    },
+    { 
+      "name" : "Rafael Lazarini",
+      "github" : "https://github.com/rlazarini"
     }
   ],
   "license": "ISC",

@@ -1,4 +1,4 @@
-function _(sel, all, key, searchIn){
+function getElm(sel, all, key, searchIn){
     searchIn = typeof searchIn == 'string' ? _(searchIn) : searchIn;
     searchIn = (!sel.match(/^#/) && searchIn) || document;
     if(sel.match(/^#/)){
@@ -12,18 +12,18 @@ function _(sel, all, key, searchIn){
     }
 }
 
-function _tC(elm, newC){
+function toggleClass(elm, newC){
     var current = elm.className
     ,   filter = new RegExp('^'+newC+'$|^'+newC+' | '+newC+'$| '+newC+' ');
     elm.className = current.match(filter) ? current.replace(filter, '') : (current + ' ' + newC);
 }
 
-function _hC(elm, c){
+function hasClass(elm, c){
     
     return $testString(c, elm.className);
 }
 
-function _rC(elms, c){
+function removeClass(elms, c){
     elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
     var filter = new RegExp('^'+c+'$|^'+c+' | '+c+'$| '+c+' ');
     for(var i = 0, lgt = elms.length; i < lgt; i++){
@@ -31,7 +31,7 @@ function _rC(elms, c){
     }
 }
 
-function _pF(elms){
+function parseForm(elms){
     elms = (typeof elms == 'string') ? _(elms) : elms;
     var data = {}
     ,   inputs = $htmlColToArray(_('input', true, false, elms))
@@ -57,7 +57,7 @@ function _pF(elms){
     return data;
 }
 
-function _bA(attr, value, elms){
+function byAttr(attr, value, elms){
     elms = elms || document;
     var search = elms.getElementsByTagName('*')
     ,   found = [];
@@ -71,7 +71,7 @@ function _bA(attr, value, elms){
     return found.length == 1 ? found[0] : found;
 }
 
-function _bE(elms, evt, callback){
+function bindElm(elms, evt, callback){
     if(typeof elms == 'string') elms = _(elms);
     evt = evt.split(' ');
     elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
@@ -82,63 +82,7 @@ function _bE(elms, evt, callback){
     }
 }
 
-function _tBAR(elms, attr, min, max, options){
-    options = options || {
-        property     : 'transform',
-        show         : 'scale(1)',
-        hide         : 'scale(0)'
-    }
-    
-    var visibles = [];    
-    min = Number(min);
-    max = Number(max);
-
-    for(var i = 0, lgt = elms.length, elm = elms[0]; i < lgt; i++, elm = elms[i]){
-        var attrVal = Number(elm.getAttribute(attr).replace(/[\.\ ]+/g, '').replace(/\,/, '.').replace('.00', ''));
-        if( !(attrVal >= min && attrVal <= max) ){
-            _sSP(elm, 'display', 'none', function(elm){
-                elm.style[options.property] = options.hide;
-            }, 500);              
-            continue;
-        }
-        visibles.push(elm);
-        _sSP(elm, 'display', 'block', function(elm){
-            elm.style[options.property] = options.show;
-        }, 500);
-    }
-    return visibles;
-}
-
-function _tBAV(elms, attr, values, options){
-    var visibles = [],
-        showAll  = false;
-    if(!values || !values[0]) showAll = true;
-    
-    options = options || {}
-    values = Array.isArray(values) ? values : [values];
-
-    for(var i = 0, lgt = elms.length, elm = elms[0]; i < lgt; i++, elm = elms[i]){
-        var attrVal = elm.getAttribute(attr);
-        for(var j = 0, lgt2 = values.length, value = values[0]; j < lgt2; j++, value = values[j]){
-            if(showAll || attrVal == value) {
-                if(!options.justHide) {
-                    _sSP(elm, 'display', 'block', function(elm){
-                        elm.style.transform = 'scale(1)';
-                    }, 500);
-                }
-                visibles.push(elm);
-                break;
-            }
-        }
-        _sSP(elm, 'display', 'none', function(elm){
-            elm.style.transform = 'scale(0)';
-        }, 500);
-    }
-        
-    return visibles;
-}
-
-function _sSP(elm, property, value, onFinish, time, isToInitial){
+function setStyleProp(elm, property, value, onFinish, time, isToInitial){
     elm.style[property] = value;
     elm.className += ' animation-happening'
     onFinish && setTimeout(function(){
@@ -146,18 +90,32 @@ function _sSP(elm, property, value, onFinish, time, isToInitial){
     }, time);
 }
 
-function _gpu(url){
-    url = (url.split('?').length == 1) ? url.split('?')[0] : url.split('?')[1];
+function getUrlParam(url){
+    url = url || window.location.href;
+    
+    if(typeof url !== 'string') throw new Error('Url must be a string!');    
+
+    var spl = url.split('?');
+
+    url = (spl.length === 1) ? spl[0] : spl[1];
     var param  = {}
     ,   params = url.split('&');
 
     for (var i = 0, lgt = params.length; i < lgt; i++) {
-        splitParam = params[i].split('=');
-        if (typeof param[splitParam[0]] == 'string') {
-            param[splitParam[0]] = (param[splitParam[0]] == '') ? (splitParam[1] || '') : ((!splitParam[1]) ? param[splitParam[0]] + '' : param[splitParam[0]] + ',' + splitParam[1]);
-        } else {
-            param[splitParam[0]] = (splitParam.length == 1) ? '' : splitParam[1];
+        var splitParam = params[i].split('=')
+        ,   curKey   = splitParam[0]
+        ,   curValue = splitParam[1];
+    
+        if(!curKey) continue;
+
+        if (param[curKey]) {
+            if (!Array.isArray(param[curKey])){
+                param[curKey] = [ param[curKey] ];
+            }
+            param[curKey].push(curValue || '');
+            continue;
         }
+        param[curKey] = curValue || '';
     }
     return param;
 }
@@ -185,19 +143,21 @@ function $htmlColToArray(collection){
     return elms;
 }
 
-var dmIe8 = window.isIe8 && require('./dom-manipulator-ie8');
+var domManipulator = {
+    _                  : getElm,
+    _toggleClass       : toggleClass,
+    _removeClass       : removeClass,
+    _hasClass          : hasClass,
+    _parseForm         : parseForm,
+    _byAttr            : byAttr,
+    _bindElm           : bindElm,
+    _setStyleProp      : setStyleProp,
+    _getUrlParam       : getUrlParam
+}
 
-
-module.exports = {
-    _                  : _,
-    _toggleClass       : _tC,
-    _removeClass       : _rC,
-    _hasClass          : _hC,
-    _parseForm         : _pF,
-    _byAttr            : !window.isIe8 ? _bA : dmIe8._bA,
-    _bindElm           : !window.isIe8 ? _bE : dmIe8._bE,
-    _toggleByAttrRange : _tBAR,
-    _toggleByAttrValue : _tBAV,
-    _setStyleProp      : _sSP,
-    _getUrlParam       : _gpu
+try {
+    module.exports = domManipulator;
+} catch(err){
+    // using like a library
+    window._ = domManipulator;
 }
