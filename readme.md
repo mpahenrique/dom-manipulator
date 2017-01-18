@@ -13,7 +13,7 @@ $ cd dom-manipulator
 $ npm install
 ```
 
-### Starting
+### Usage
 ```js
 'use strict';
 
