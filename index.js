@@ -72,7 +72,7 @@ function byAttr(attr, value, elms){
 }
 
 function bindElm(elms, evt, callback){
-    if(typeof elms == 'string') elms = _(elms);
+    if(typeof elms == 'string') elms = getElm(elms);
     evt = evt.split(' ');
     elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
     for(var i = 0, lgt = elms.length; i < lgt; i++){
