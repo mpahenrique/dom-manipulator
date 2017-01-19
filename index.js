@@ -12,10 +12,13 @@ function getElm(sel, all, key, searchIn){
     }
 }
 
-function toggleClass(elms, newC){
+function toggleClass(elms, c){
     elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
+    c = c.split(' ');
     for(var i = 0, lgt = elms.length; i < lgt; i++){
-        elms[i].classList.toggle(newC);
+        var elmClass = elms[i].classList
+        ,   limit = c.length;
+        while(limit--){elmClass.toggle(c[limit])};
     }
 }
 
@@ -23,18 +26,21 @@ function hasClass(elm, c){
     return $testString(c, elm.className);
 }
 
-function addClass(elms, newC){
-    //elms = Array.isArray(elms) || (typeof elms == 'object' && elms.length) ? elms : [elms];
+function addClass(elms, c){
     elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
+    c = c.split(' ');
     for(var i = 0, lgt = elms.length; i < lgt; i++){
-        elms[i].classList.add(newC);
+        var limit = c.length;
+        while(limit--){elms[i].classList.add(c[limit])};
     }
 }
 
 function removeClass(elms, c){
     elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
+    c = c.split(' ');
     for(var i = 0, lgt = elms.length; i < lgt; i++){
-        elms[i].classList.remove(c);
+        var limit = c.length;
+        while(limit--){elms[i].classList.remove(c[limit])};
     }
 }
 
