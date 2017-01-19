@@ -1,5 +1,5 @@
 function getElm(sel, all, key, searchIn){
-    searchIn = typeof searchIn == 'string' ? _(searchIn) : searchIn;
+    searchIn = typeof searchIn == 'string' ? getElm(searchIn) : searchIn;
     searchIn = (!sel.match(/^#/) && searchIn) || document;
     if(sel.match(/^#/)){
         return searchIn.getElementById(sel.replace(/^#/, ''));
@@ -12,31 +12,38 @@ function getElm(sel, all, key, searchIn){
     }
 }
 
-function toggleClass(elm, newC){
-    var current = elm.className
-    ,   filter = new RegExp('^'+newC+'$|^'+newC+' | '+newC+'$| '+newC+' ');
-    elm.className = current.match(filter) ? current.replace(filter, '') : (current + ' ' + newC);
+function toggleClass(elms, newC){
+    elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
+    for(var i = 0, lgt = elms.length; i < lgt; i++){
+        elms[i].classList.toggle(newC);
+    }
 }
 
 function hasClass(elm, c){
-    
     return $testString(c, elm.className);
+}
+
+function addClass(elms, newC){
+    //elms = Array.isArray(elms) || (typeof elms == 'object' && elms.length) ? elms : [elms];
+    elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
+    for(var i = 0, lgt = elms.length; i < lgt; i++){
+        elms[i].classList.add(newC);
+    }
 }
 
 function removeClass(elms, c){
     elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
-    var filter = new RegExp('^'+c+'$|^'+c+' | '+c+'$| '+c+' ');
     for(var i = 0, lgt = elms.length; i < lgt; i++){
-        elms[i].className = (elms[i].className || '').replace(filter, '');
+        elms[i].classList.remove(c);
     }
 }
 
 function parseForm(elms){
-    elms = (typeof elms == 'string') ? _(elms) : elms;
+    elms = (typeof elms == 'string') ? getElm(elms) : elms;
     var data = {}
-    ,   inputs = $htmlColToArray(_('input', true, false, elms))
-    ,   selects = $htmlColToArray(_('select', true, false, elms))    
-    ,   textareas = $htmlColToArray(_('textarea', true, false, elms))
+    ,   inputs = $htmlColToArray(getElm('input', true, false, elms))
+    ,   selects = $htmlColToArray(getElm('select', true, false, elms))    
+    ,   textareas = $htmlColToArray(getElm('textarea', true, false, elms))
     ,   all = inputs.concat(selects.concat(textareas));
     
     for (var i = 0, lgt = all.length; i < lgt; i++){
@@ -82,12 +89,16 @@ function bindElm(elms, evt, callback){
     }
 }
 
-function setStyleProp(elm, property, value, onFinish, time, isToInitial){
-    elm.style[property] = value;
-    elm.className += ' animation-happening'
-    onFinish && setTimeout(function(){
-        onFinish(elm);
-    }, time);
+function setStyleProp(elm, property, value, time, onFinish){
+    var oProp = {}
+    typeof property === 'object' && (oProp = property) || (oProp[property] = value);
+    for (var stprop in oProp) {
+        elm.style[stprop] = oProp[stprop];
+    }
+    (onFinish || time) && (elm.className += ' animation-happening') && setTimeout(function(){
+        removeClass(elm,'animation-happening');
+        (onFinish || time)(elm);
+    }, typeof onFinish === 'function' ? time : value);
 }
 
 function getUrlParam(url){
@@ -146,6 +157,7 @@ function $htmlColToArray(collection){
 var domManipulator = {
     _                  : getElm,
     _toggleClass       : toggleClass,
+    _addClass          : addClass,
     _removeClass       : removeClass,
     _hasClass          : hasClass,
     _parseForm         : parseForm,
