@@ -85,7 +85,7 @@ function byAttr(attr, value, elms){
 }
 
 function bindElm(elms, evt, callback){
-    if(typeof elms == 'string') elms = getElm(elms);
+    if(typeof elms == 'string') elms = getElm(elms, true);
     evt = evt.split(' ');
     elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
     for(var i = 0, lgt = elms.length; i < lgt; i++){
@@ -135,6 +135,16 @@ function getUrlParam(url){
         param[curKey] = curValue || '';
     }
     return param;
+}
+
+function remove(elms,start){
+    if(typeof elms == 'string') elms = getElm(elms,true);
+    elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
+    start = start || 0;
+    count = ((elms.length - start) >= 0) ? (elms.length - start) : -1;
+    for(var i = 0, lgt = count; i < lgt; i++){
+        elms[start].parentNode.removeChild(elms[start]);
+    }
 }
 
 function $testString(filter, string){
