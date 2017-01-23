@@ -187,5 +187,5 @@ try {
     module.exports = domManipulator;
 } catch(err){
     // using like a library
-    window._ = domManipulator;
+    window.domManipulator = domManipulator;
 }
