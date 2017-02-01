@@ -1,7 +1,7 @@
 # Dom Manipulator
 The Dom Manipulator allows you to manipulate HTML elements simply and objectively without unnecessary attributes. 
 
-Using Dom Manipulator you can:
+## Using Dom Manipulator you can:
   - Find elements using the class, id, tagname or attribute;
   - Set new class or remove a class
   - Obtain a object by a parsing a form element.
@@ -20,7 +20,7 @@ $ npm install
 var domManipulator = require('dom-manipulator');
 
 var _elm  = domManipulator._('theElement')
-// ==> Get the element {optional: ['all'(boolean: return all selectors), 'key'(integer: select the position), 'searchIn'(string: search the element inside a node)]}
+> ==> Get the element {optional: ['all'(boolean: return all selectors), 'key'(integer: select the position), 'searchIn'(string: search the element inside a node)]}
 
 var _form = domManipulator._('form');
 
