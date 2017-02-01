@@ -20,7 +20,7 @@ $ npm install
 var domManipulator = require('dom-manipulator');
 
 var _elm  = domManipulator._('theElement')
-> ==> Get the element {optional: ['all'(boolean: return all selectors), 'key'(integer: select the position), 'searchIn'(string: search the element inside a node)]}
+// ==> Get the element {optional: ['all'(boolean: return all selectors), 'key'(integer: select the position), 'searchIn'(string: search the element inside a node)]}
 
 var _form = domManipulator._('form');
 
