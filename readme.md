@@ -1,4 +1,5 @@
 # Dom Manipulator
+[![npm version](https://badge.fury.io/js/dom-manipulator.svg)](https://badge.fury.io/js/dom-manipulator)
 The Dom Manipulator allows you to manipulate HTML elements simply and objectively without unnecessary attributes. 
 
 ## Using Dom Manipulator you can:
