@@ -1,7 +1,7 @@
 {
   "name": "dom-manipulator",
-  "version": "1.0.1",
-  "description": "",
+  "version": "1.0.2",
+  "description": "A simply way to manipulate HTML elements without unnecessary attributes",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
