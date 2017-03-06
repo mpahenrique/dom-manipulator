@@ -16,6 +16,50 @@ function init(){
         }
     }
 
+    function createElm(obj) {
+        if (typeof obj === 'object') {
+            var node         = document.createElement(obj.elm || 'div')
+            ,   content      = obj.content
+            ,   insertAfter  = obj.insertAfter
+            ,   insertBefore = obj.insertBefore
+            ,   attributes   = obj.attributes;
+
+            if (!!content) node.appendChild(document.createTextNode(content));
+
+            if (typeof attributes === 'object') {
+                for (var attr in attributes) {
+                    if (attr === 'style' && typeof attributes[attr] === 'object') {
+                        setStyleProp(node,attributes[attr])
+                    } else {
+                        node.setAttribute(attr, attributes[attr])
+                    }
+                }
+            }
+            
+            if (!!insertAfter) {
+                if (typeof insertAfter === 'object') {
+                    insertAfter.appendChild(node)
+                } else {
+                    getElm(insertAfter).appendChild(node);
+                }
+            }
+            
+            if (!insertAfter && !!insertBefore) {
+                if (typeof insertBefore === 'object') {
+                    insertBefore.insertBefore(node, insertBefore.childNodes[0])
+                } else {
+                    var elmBefore = getElm(insertBefore);
+                    elmBefore.insertBefore(node, elmBefore.childNodes[0])
+                }
+            }
+            
+            return (!!insertAfter && !!insertBefore) ? 'É um objeto' : true;
+        } else {
+            var node = document.createElement(obj);
+            return node;
+        }
+    }
+
     function toggleClass(elms, c){
         elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
         c = c.split(' ');
@@ -176,6 +220,7 @@ function init(){
 
     return {
         getElm       : getElm,
+        createElm    : createElm,
         toggleClass  : toggleClass,
         addClass     : addClass,
         removeClass  : removeClass,

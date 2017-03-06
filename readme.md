@@ -46,6 +46,22 @@ var dm = require('dom-manipulator');
 var _elm  = dm.getElm('#my-element')
 // ==> Get the element {optional: ['all'(boolean: return all selectors), 'key'(integer: select the position), 'searchIn'(string: search the element inside a node)]}
 
+dm.createElm(obj)
+// ==> This function, create a new element, they works with a object using this paramers:
+// 'elm': passing the new element
+// 'content': insert a text inside this new element
+// 'insertAfter': insert the new element in a existing element (you can pass the id element or the object element)
+// 'insertBefore': same as insertAfter, but they insert in the beginning of the existing element
+// 'attributes': insert attributes in the new element. It as a object.
+// Ex: 'attributes' : {
+// 		'tabindex': 1,
+// 		'style': {
+// 			'display':'block',
+// 			'width': '200px',
+// 			'height': '100px'
+// 		}
+// }
+
 dm.toggleClass(_elm,'classToggle')
 // ==> This function, verify if 'classToToggle' existy, in true case, they remove the class, otherwise add the class
 
