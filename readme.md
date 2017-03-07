@@ -89,7 +89,7 @@ dm.setStyleProp(_elm, 'border', '20px solid red')
 dm.getUrlParam()
 // ==> Get the url params and return as a Object {optional: ['url'(string: pass a url with params to get the Object return, by default they get window.location)]}
 
-dm.remove(_elm) /* or */ dm.remove('.my-other-element');
+dm.removeElm(_elm) /* or */ dm.removeElm('.my-other-element');
 // ==> Remove the elements {optional: ['start'(Integer: Pass the index to start the remove itens)]}
 
 ```

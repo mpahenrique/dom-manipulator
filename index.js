@@ -70,7 +70,7 @@ function init(){
                 }
             }
             
-            return (!!insertAfter && !!insertBefore) ? 'É um objeto' : true;
+            return (!!insertAfter && !!insertBefore) ? '' : true;
         } else {
             var node = document.createElement(obj);
             return node;
@@ -202,7 +202,7 @@ function init(){
         return param;
     }
 
-    function remove(elms,start){
+    function removeElm(elms,start){
         if(typeof elms == 'string') elms = getElm(elms,true);
         elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
         start = start || 0;
@@ -238,6 +238,7 @@ function init(){
     return {
         getElm       : getElm,
         createElm    : createElm,
+        removeElm    : removeElm,
         toggleClass  : toggleClass,
         addClass     : addClass,
         removeClass  : removeClass,

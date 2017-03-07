@@ -1,6 +1,6 @@
 {
   "name": "dom-manipulator",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A simply way to manipulate HTML elements without unnecessary attributes",
   "main": "index.js",
   "scripts": {
