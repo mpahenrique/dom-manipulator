@@ -40,6 +40,15 @@ function init(){
                 if (typeof insertAfter === 'object') {
                     insertAfter.appendChild(node)
                 } else {
+                    insertAfter = (insertAfter.charAt(0) === '#' || insertAfter.charAt(0) === '.') ? insertAfter : '.' + insertAfter;
+                    var elmAfter = getElm(insertAfter);
+                    if (!elmAfter) {
+                        var createE = document.createElement('div')
+                        ,   attr    = (insertAfter.charAt(0) === '#') ? 'id' : 'class';
+                        createE.setAttribute(attr,insertAfter.replace(/\.|\#/,''));
+                        document.body.appendChild(createE);
+                        elmAfter = getElm(insertAfter);
+                    }
                     getElm(insertAfter).appendChild(node);
                 }
             }
@@ -48,7 +57,15 @@ function init(){
                 if (typeof insertBefore === 'object') {
                     insertBefore.insertBefore(node, insertBefore.childNodes[0])
                 } else {
+                    insertBefore = (insertBefore.charAt(0) === '#' || insertBefore.charAt(0) === '.') ? insertBefore : '.' + insertBefore;
                     var elmBefore = getElm(insertBefore);
+                    if (!elmBefore) {
+                        var createE = document.createElement('div')
+                        ,   attr    = (insertBefore.charAt(0) === '#') ? 'id' : 'class';
+                        createE.setAttribute(attr,insertBefore.replace(/\.|\#/,''));
+                        document.body.appendChild(createE);
+                        elmBefore = getElm(insertBefore);
+                    }
                     elmBefore.insertBefore(node, elmBefore.childNodes[0])
                 }
             }
