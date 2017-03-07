@@ -175,7 +175,7 @@ function init(){
     function getUrlParam(url){
         url = url || window.location.href;
         
-        if(typeof url !== 'string') throw new Error('Url must be a string!');    
+        if(typeof url !== 'string') throw new Error('Url must be a string!');
 
         var spl = url.split('?');
 
@@ -204,9 +204,13 @@ function init(){
 
     function removeElm(elms,start){
         if(typeof elms == 'string') elms = getElm(elms,true);
+        if (!elms) {
+            console.error('You need to pass an existing element.');
+            return;
+        }
         elms = Array.isArray(elms) || $isNodeList(elms) ? elms : [elms];
         start = start || 0;
-        count = ((elms.length - start) >= 0) ? (elms.length - start) : -1;
+        var count = ((elms.length - start) >= 0) ? (elms.length - start) : -1;
         for(var i = 0, lgt = count; i < lgt; i++){
             elms[start].parentNode.removeChild(elms[start]);
         }
